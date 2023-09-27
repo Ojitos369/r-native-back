@@ -37,3 +37,6 @@ front/pnpm-lock.yaml
 *package-lock.json
 
 .vscode
+logs
+bin
+run
