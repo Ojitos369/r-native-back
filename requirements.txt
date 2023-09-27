@@ -3,7 +3,7 @@ Django==4.2.5
 django-cors-headers==4.2.0
 djangorestframework==3.14.0
 ojitos369==0.32
-ojitos369-mysql-db==1.0
+ojitos369-mysql-db==1.1
 PyMySQL==1.1.0
 pytz==2023.3.post1
 sqlparse==0.4.4

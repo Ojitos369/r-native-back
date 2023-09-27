@@ -23,7 +23,7 @@ class Test(GetApi):
         query = f"""insert into test
                     (name) values ("{name}")
                     """
-                    
+        
         if not (self.conexion.ejecutar(query)):
             self.conexion.rollback()
             raise self.MYE("Error al insertar")
