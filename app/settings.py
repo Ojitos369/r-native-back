@@ -174,5 +174,8 @@ ce = CE(name_project = 'REANGO BASE', email_settings = email_settings)
 
 class MYE(Exception):
     pass
-
-# ./ddp.sh --name "rn-test" --repo "git@github.com:Ojitos369/r-native-back.git" --url "rn-test.ojitos369.com"
+"""
+./ddp.sh --name "rn-test" --repo "git@github.com:Ojitos369/r-native-back.git" --url "rn-test.ojitos369.com"
+rrtdd
+sdrrtdd
+"""

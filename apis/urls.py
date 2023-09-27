@@ -1,9 +1,9 @@
-from django.urls import path
+from django.urls import path, include
 
-from apis.api import (
-    Test
-)
 
+app_name = 'apis'
 urlpatterns = [
-    path('test/', Test.as_view(), name='test'),
+    path('users/', include('apis.users.urls'), name=f'{app_name}_users'),
+    path('login/', include('apis.login.urls'), name=f'{app_name}_login'),
+    path('general/', include('apis.general.urls'), name=f'{app_name}_general'),
 ]

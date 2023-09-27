@@ -2,6 +2,7 @@
 import os
 import json
 import datetime
+import functools
 from pathlib import Path
 
 # Django
@@ -47,7 +48,13 @@ class BaseApi(APIView):
             }
 
     def get_post_data(self):
-        self.data = json.loads(self.request.body.decode('utf-8'))
+        try:
+            self.data = json.loads(self.request.body.decode('utf-8'))
+        except:
+            try:
+                self.data = self.request.data
+            except:
+                self.data = {}
     
     def validate_session(self):
         request = self.request
@@ -57,6 +64,27 @@ class BaseApi(APIView):
 
     def validar_permiso(self, usuarios_validos):
         pass
+    
+    @functools.lru_cache()
+    def str_to_date(self, date_str: str) -> datetime.datetime:
+        if not date_str:
+            return None
+        # Convertir fecha en formato ISO 8601 a un formato legible por datetime.datetime.strptime
+        if date_str.endswith("Z"):
+            date_str = date_str[:-1] + "+00:00"
+        date_str = date_str.replace("T", " ")
+        formats = [
+            "%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M", "%Y-%m-%d",
+            "%d/%m/%Y %H:%M:%S", "%d/%m/%Y %H:%M", "%d/%m/%Y",
+            "%Y/%m/%d %H:%M:%S", "%Y/%m/%d %H:%M", "%Y/%m/%d",
+            "%d-%m-%Y %H:%M:%S", "%d-%m-%Y %H:%M", "%d-%m-%Y",
+        ]
+        for fmt in formats:
+            try:
+                return datetime.datetime.strptime(date_str, fmt)
+            except ValueError:
+                pass
+        raise ValueError("No se pudo convertir la fecha")
 
 
 class PostApi(BaseApi):
