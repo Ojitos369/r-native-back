@@ -5,7 +5,7 @@ import re
 from django.contrib.auth.hashers import make_password
 
 # Ojitos369
-from ojitos369.utils import get_unique_key
+from ojitos369.utils import generate_token
 
 # User
 from .mails import CorreoActivacion
@@ -24,6 +24,7 @@ class CreateUser(PostApi):
         lower_username = username.lower()
         password = get_d(self.data, "password")
         password = make_password(password)
+
         email = get_d(self.data, "email")
         email = email.lower().strip()
         regex_email = re.compile('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
@@ -61,6 +62,8 @@ class CreateUser(PostApi):
                 (%s, %s, %s, %s, %s, %s, %s, %s)
                 """
         query_data = (username, lower_username, password, email, phone, name, lastname, birthdate)
+        # pln(query)
+        # pln(query_data)
         if not (self.conexion.ejecutar(query, query_data)):
             self.conexion.rollback()
             raise self.MYE("Error al insertar")
@@ -77,7 +80,7 @@ class CreateUser(PostApi):
         rs = self.conexion.consulta_asociativa(query, query_data)
         id_user = rs[0]["id_user"]
         
-        token = get_unique_key()
+        token = generate_token()
         
         query = """insert into activation_codes
                 (code, user_id)
@@ -92,7 +95,7 @@ class CreateUser(PostApi):
         self.conexion.commit()
 
         text = f"""El codigo de activacion de tu cuenta es:\n{token}"""
-        mail = CorreoActivacion({"email_text": text})
+        mail = CorreoActivacion(email_text=text, to_email=email)
         mail.send()
 
         self.response = {

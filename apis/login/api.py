@@ -7,7 +7,7 @@ import json
 from django.contrib.auth.hashers import check_password
 
 # Ojitos369
-from ojitos369.utils import get_unique_key
+from ojitos369.utils import generate_token
 
 # User
 from app.core.bases.apis import PostApi, GetApi, get_d, pln
@@ -38,13 +38,15 @@ class Login(PostApi):
         if not check_password(password, user["password"]):
             raise self.MYE("Revise las credenciales de acceso")
         
-        token = get_unique_key()
+        token = generate_token()
         
         query = """update users
-                    set last_login = now(),
+                    set last_login = now()
                     where id_user = %s
                     """
         query_data = (user["id_user"],)
+        # pln(query)
+        # pln(query_data)
         if not (self.conexion.ejecutar(query, query_data)):
             self.conexion.rollback()
             raise self.MYE("Error al actualizar")
@@ -55,14 +57,14 @@ class Login(PostApi):
             "email": user["email"],
             "phone": user["phone"],
             "status": user["status"],
-            "validated": user["validated"],
-            "active": user["active"],
+            "validated": bool(user["validated"]),
+            "active": bool(user["active"]),
             "name": user["name"],
             "lastname": user["lastname"],
             "birthdate": user["birthdate"],
         }
 
-        self.status = {
+        self.response = {
             "message": "Login exitoso",
             "token": token,
             "user": user,

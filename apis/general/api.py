@@ -7,7 +7,7 @@ import json
 from django.contrib.auth.hashers import make_password
 
 # Ojitos369
-from ojitos369.utils import get_unique_key
+from ojitos369.utils import generate_token
 
 # User
 from app.core.bases.apis import PostApi, GetApi, get_d, pln

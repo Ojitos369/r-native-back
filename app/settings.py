@@ -170,6 +170,12 @@ email_settings = {
 if not (email_settings['user'] and email_settings['password']):
     email_settings = None
 
+EMAIL_HOST = email_settings['smtp_server']
+EMAIL_HOST_USER = email_settings['user']
+EMAIL_HOST_PASSWORD = email_settings['password']
+DEFAULT_FROM_EMAIL = email_settings['sender']
+EMAIL_PORT = email_settings['port']
+
 ce = CE(name_project = 'REANGO BASE', email_settings = email_settings)
 
 class MYE(Exception):
