@@ -20,6 +20,9 @@ class Login(PostApi):
         username = username.lower().strip()
         password = get_d(self.data, "password")
         
+        # pln(f"username: {username}")
+        # pln(f"password: {password}")
+        
         query = """select *
                     from users
                     where (lower_username = %s
