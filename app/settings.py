@@ -183,5 +183,5 @@ class MYE(Exception):
 """
 ./ddp.sh --name "rn-test" --repo "git@github.com:Ojitos369/r-native-back.git" --url "rn-test.ojitos369.com"
 rrtdd
-sdrrtdd
+srrtdd
 """
